@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Env y secretos
+.env
+*.env.local
+
+# Base de datos local
+*.db
+backend/portal.db
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Sistema
+.DS_Store
