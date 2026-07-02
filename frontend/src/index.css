@@ -1,4 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #EDEAE0;
+  --color-ink-navy: #16233B;
+  --color-gold: #B8862E;
+  --color-stamp-green: #2F6E4F;
+  --color-stamp-red: #A13D2C;
+  --color-stamp-grey: #6E6A5E;
+
+  --font-display: "Roboto Slab", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, sans-serif; background: #f9fafb; color: #111; }
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  color: var(--color-ink-navy);
+  font-family: var(--font-sans);
+}
+
 #root { min-height: 100vh; }
-a { color: #2563eb; }
