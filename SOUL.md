@@ -28,6 +28,22 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
   del agente). Se exploró la API de SECOP en vivo para aterrizar la integración en
   los 51 campos reales del dataset (no inventados).
 
+- **[2026-07-02] Días 2 y 3 — Backend completo + primer frontend.** Se generó
+  `backend/app/` siguiendo `docs/PLAN-DIA2-BACKEND.md` casi al pie de la letra
+  (`config.py`, `database.py`, `models.py`, `schemas.py`, `deps.py`, `routers/auth.py`,
+  `services/secop.py`), y se adelantó también el alcance del Día 3 (bookmarks y
+  saved-searches) en la misma sesión. Modelo usado: **Claude Sonnet 4.6** para todo
+  el tramo (scaffolding, lógica de negocio e integración SECOP) — no se necesitó
+  escalar a un modelo más potente en estos pasos.
+  - Se generó el primer frontend en React + Vite: login, registro, listado con
+    búsqueda/filtros básicos, vista de detalle y navegación con `react-router-dom`.
+  - **`$select` fijo vs. traer todos los campos:** se optó por `$select` fijo con
+    los 14 campos que el portal realmente usa (ver `services/secop.py`), en vez de
+    traer los 51 campos del dataset, para aligerar el payload de cada consulta a SECOP.
+  - **Cómo se verificó `urlproceso` como objeto:** se confirmó en vivo contra la API
+    real de SECOP (no se asumió por documentación) que el campo llega como
+    `{"url": "..."}` y no como string; de ahí el `.get()` seguro en `_normalize()`.
+
 ## Decisiones y trade-offs
 - **SQLite en vez de PostgreSQL:** cero infra, suficiente para el MVP; el spec
   permite ambos. Trade-off: menos realista para producción, pero más rápido de demostrar.
@@ -39,6 +55,27 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
 
 ## Bloqueos y cómo los resolví
 > _(Registrar cada bloqueo real y su solución — esto puntúa: demuestra autonomía.)_
+
+- **[2026-07-02] `passlib` incompatible con Python 3.14.** Al generar
+  `security.py` según el plan (passlib `CryptContext` con esquema bcrypt), el
+  hashing de contraseñas fallaba por incompatibilidad de `passlib` con la versión
+  de Python del entorno (3.14). **Solución:** se reemplazó `passlib.CryptContext`
+  por llamadas directas a la librería `bcrypt` (`bcrypt.hashpw` / `bcrypt.checkpw`),
+  eliminando la dependencia de `passlib` sin cambiar el contrato de las funciones
+  `hash_password` / `verify_password`. Nota para el spec: `docs/SPEC.md` y
+  `docs/PLAN-DIA2-BACKEND.md` todavía mencionan `passlib[bcrypt]` como dependencia;
+  el código real ya no la usa.
+
+- **[2026-07-02] Tailwind nunca se instaló de verdad en el frontend.** Al
+  diseñar la nueva dirección visual se descubrió que `frontend/package.json` no
+  tiene `tailwindcss` y no existe `tailwind.config.js`. Las clases tipo
+  `bg-red-500 text-white px-4 py-2 rounded` ya escritas en `Home.jsx`,
+  `Detail.jsx`, `Login.jsx` y `Register.jsx` desde Días 2-3 son clases muertas —
+  nunca se procesaron a CSS real, de ahí el look sin estilo del frontend actual.
+  **Decisión (con visto bueno del usuario):** instalar Tailwind v4 (`tailwindcss`
+  + `@tailwindcss/vite`) en vez de reescribir todo a CSS plano, para reaprovechar
+  las clases ya presentes en el código. Detalle del plan en
+  `docs/superpowers/specs/2026-07-02-cierre-dia4-frontend-design.md §9`.
 
 ## Qué mejoraría o pediría
 > _(Cerrar al final: límites del MVP, qué haría con más tiempo/créditos.)_
