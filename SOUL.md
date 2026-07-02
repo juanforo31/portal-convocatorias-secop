@@ -92,8 +92,50 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
   funcionando). Detectado y corregido en la primera vuelta de revisión de
   Task 6, antes de tocar `Login.jsx`/`Register.jsx`.
 
+- **[2026-07-02] Cierre Día 4 — bookmarks/perfil/UI, vía subagent-driven-development.**
+  Se ejecutó `docs/superpowers/plans/2026-07-02-cierre-dia4-frontend.md` (11 tareas)
+  en un worktree aislado (`worktree-cierre-dia4-frontend`), con un subagente
+  implementador + un subagente revisor por tarea. Modelos: **Haiku** para tareas
+  mecánicas de transcripción (utils puros, componentes sin lógica, Tailwind
+  setup, polish de Login/Register); **Sonnet** para tareas de integración
+  multi-archivo (App.jsx, Home.jsx, Detail.jsx, Profile.jsx) y para todas las
+  revisiones. Cerró:
+  - Contrato de API: `DELETE /api/bookmarks/{proceso_id}` (antes ID interno) y
+    `POST/GET /api/saved-searches` con `filters` como objeto (antes JSON string
+    manual) — ambos con tests pytest nuevos (primera suite de tests del backend).
+  - Frontend: filtros completos + paginación + favoritos + "guardar búsqueda" en
+    Home; favorito en Detail; página de Perfil (favoritos + búsquedas guardadas
+    re-ejecutables); normalización de `"No Definido"`/`"No Adjudicado"`.
+  - Dirección visual "gaceta/expediente oficial": Tailwind v4 instalado de
+    verdad (nunca lo estuvo, ver bloqueo arriba), tokens de color/tipografía,
+    componente `EstadoStamp` (sello de estado) como elemento de firma visual.
+  - Dos bloqueos reales detectados en revisión y corregidos antes de avanzar:
+    el interceptor 401 vs. login (arriba) y un `setSearchParams` sin
+    `{replace: true}` que llenaba el historial del navegador con una entrada
+    por cada tecla escrita en los filtros (Task 7), además de agregarle
+    debounce de 400ms al fetch de convocatorias.
+  - **Limitación de esta sesión:** ni el controlador ni los subagentes tuvieron
+    acceso a un navegador real — toda la verificación de frontend fue
+    `npm run build` + llamadas curl contra el backend real (puerto 8001,
+    aislado del server de desarrollo) + trazas estáticas del código. Falta un
+    recorrido manual real en navegador antes de dar el flujo por 100% probado
+    visualmente (ver Definition of Done en `docs/SPEC.md §10`).
+
 ## Qué mejoraría o pediría
-> _(Cerrar al final: límites del MVP, qué haría con más tiempo/créditos.)_
+- Con más tiempo: dropdowns con valores reales de SECOP para los filtros (hoy
+  son texto libre), conteo total de resultados en `/api/convocatorias`
+  ("página X de Y" en vez de solo Anterior/Siguiente), y un framework de tests
+  de frontend (no existe ninguno en el proyecto — toda la verificación de
+  React fue build-check + curl + trazas manuales, nunca clicks reales).
+- Una condición de carrera de baja probabilidad quedó como deuda conocida: en
+  Home/Detail, el fetch de `GET /bookmarks` al montar no tiene
+  `AbortController` ni guard de staleness frente a un toggle de favorito
+  disparado justo después — el debounce de Home mitiga la ventana pero no la
+  elimina.
+- Recomendación fuerte antes de la demo: hacer el recorrido manual completo en
+  navegador (login → filtros → favorito → perfil → guardar/re-ejecutar
+  búsqueda → logout) descrito en el plan de cierre Día 4 §8, ya que esta
+  sesión no pudo verificarlo visualmente por falta de herramienta de navegador.
 
 ## Enlace al repositorio
 > _(Pegar la URL del repo público GitHub/GitLab.)_
