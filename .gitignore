@@ -3,6 +3,9 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+venv2/
+venv_clean/
+backend/venv*/
 
 # Env y secretos
 .env
