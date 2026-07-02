@@ -127,6 +127,19 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
   ("página X de Y" en vez de solo Anterior/Siguiente), y un framework de tests
   de frontend (no existe ninguno en el proyecto — toda la verificación de
   React fue build-check + curl + trazas manuales, nunca clicks reales).
+- **Deuda documentada de la revisión final de rama (2026-07-02, todos Minor,
+  ninguno bloquea el merge):**
+  1. Lógica de toggle de favorito duplicada en `Home.jsx`, `Detail.jsx` y
+     `Profile.jsx` (patrón "409/404 = éxito" copiado 3 veces) — candidata a un
+     hook compartido `useBookmarkToggle`.
+  2. `Profile.jsx`'s `fetchAll` no maneja errores (a diferencia de Home/Detail);
+     un fallo no-401 en cualquiera de las 3 llamadas deja el perfil en blanco
+     sin mensaje.
+  3. `proceso_id` no pasa por `encodeURIComponent` en las rutas `DELETE`
+     (`Home.jsx`, `Detail.jsx`, `Profile.jsx`) — no es un bug real con los IDs
+     actuales de SECOP, pero es hardening defensivo barato.
+  4. El campo `titulo` no pasa por `displayValue` en `Home.jsx`/`Detail.jsx`
+     (sí en `Profile.jsx`) — inconsistencia menor de normalización.
 - Una condición de carrera de baja probabilidad quedó como deuda conocida: en
   Home/Detail, el fetch de `GET /bookmarks` al montar no tiene
   `AbortController` ni guard de staleness frente a un toggle de favorito
