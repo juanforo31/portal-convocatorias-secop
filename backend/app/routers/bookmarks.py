@@ -41,15 +41,18 @@ def create_bookmark(
     return bookmark
 
 
-@router.delete("/{bookmark_id}", status_code=204)
+@router.delete("/{proceso_id}", status_code=204)
 def delete_bookmark(
-    bookmark_id: int,
+    proceso_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     bookmark = (
         db.query(Bookmark)
-        .filter(Bookmark.id == bookmark_id, Bookmark.user_id == current_user.id)
+        .filter(
+            Bookmark.proceso_id == proceso_id,
+            Bookmark.user_id == current_user.id,
+        )
         .first()
     )
     if not bookmark:
