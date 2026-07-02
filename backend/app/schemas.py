@@ -65,11 +65,10 @@ class BookmarkOut(BaseModel):
 # --- Saved Searches ---
 class SavedSearchCreate(BaseModel):
     name: str
-    filters_json: str  # JSON serializado del objeto de filtros
+    filters: dict
 
 class SavedSearchOut(BaseModel):
     id: int
     name: str
-    filters_json: str
+    filters: dict
     created_at: str
-    model_config = {"from_attributes": True}
