@@ -48,12 +48,15 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const params = {}
-    FILTER_KEYS.forEach((key) => {
-      if (filters[key]) params[key] = filters[key]
-    })
-    setSearchParams(params)
-    fetchConvocatorias()
+    const timer = setTimeout(() => {
+      const params = {}
+      FILTER_KEYS.forEach((key) => {
+        if (filters[key]) params[key] = filters[key]
+      })
+      setSearchParams(params, { replace: true })
+      fetchConvocatorias()
+    }, 400)
+    return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters])
 
