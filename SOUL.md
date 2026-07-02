@@ -77,6 +77,21 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
   las clases ya presentes en el código. Detalle del plan en
   `docs/superpowers/specs/2026-07-02-cierre-dia4-frontend-design.md §9`.
 
+- **[2026-07-02] Interceptor 401 global chocaba con el login.** Al ejecutar el
+  plan de cierre Día 4 (Task 6, vía subagent-driven-development), el reviewer
+  detectó que el nuevo interceptor de respuesta de axios en `App.jsx`
+  interceptaba *cualquier* `401`, incluyendo el `401` legítimo de
+  `POST /api/auth/login` con credenciales incorrectas (documentado en
+  `SPEC.md §7`). Antes de que `Login.jsx` pudiera mostrar "Credenciales
+  incorrectas" en su `catch`, el interceptor ya había limpiado el token y
+  forzado un `window.location.href = '/login'` (recarga dura) — el usuario
+  nunca veía el mensaje de error. **Solución (confirmada con el usuario):** el
+  interceptor ahora excluye `/auth/login` y `/auth/register` del auto-logout
+  (`error.config.url` termina en esas rutas → no limpia token ni redirige,
+  pero sigue rechazando la promesa para que el `catch` de cada página siga
+  funcionando). Detectado y corregido en la primera vuelta de revisión de
+  Task 6, antes de tocar `Login.jsx`/`Register.jsx`.
+
 ## Qué mejoraría o pediría
 > _(Cerrar al final: límites del MVP, qué haría con más tiempo/créditos.)_
 
