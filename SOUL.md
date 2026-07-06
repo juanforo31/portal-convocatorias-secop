@@ -121,6 +121,32 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
     recorrido manual real en navegador antes de dar el flujo por 100% probado
     visualmente (ver Definition of Done en `docs/SPEC.md §10`).
 
+- **[2026-07-06] Recorrido manual en navegador real — cierra la limitación
+  documentada arriba.** Se hizo el recorrido completo con un navegador real
+  (Playwright/Chromium headless, no solo curl/build): registro → login →
+  browse con datos reales de SECOP → marcar favorito en Home y en Detail →
+  guardar búsqueda (diálogo `window.prompt`) → perfil (favoritos y búsqueda
+  guardada visibles) → re-ejecutar búsqueda guardada → logout → re-login
+  confirmando que el favorito y la búsqueda guardada **persisten** → login
+  con credenciales incorrectas mostrando "Credenciales incorrectas" (confirma
+  que el fix del interceptor 401 sigue funcionando) → `GET /api/bookmarks`
+  sin token responde 401. Cero errores de consola o HTTP durante toda la
+  sesión.
+
+- **[2026-07-06] `backend/requirements.txt` no era instalable desde cero.**
+  Fijaba `pydantic==2.5.0` junto a `pydantic-settings==2.5.0` (que exige
+  `pydantic>=2.7.0`) — conflicto de resolución de pip. Además, esas versiones
+  viejas de `pydantic-core` no tienen wheel prebuilt para Python 3.14, así que
+  ni siquiera compilaban desde código fuente. Esto explica las cuatro carpetas
+  de venv distintas que había en `backend/` (intentos previos hasta encontrar
+  una combinación que instalara). Se subieron `fastapi`, `uvicorn`,
+  `sqlalchemy`, `pydantic`, `python-jose`, `httpx` y `python-dotenv` a
+  versiones verificadas: instalación limpia en un venv nuevo, backend arranca,
+  y los 6 tests de pytest pasan.
+
+- **[2026-07-06] `README.md` creado** (no existía) para cerrar el último
+  ítem pendiente del Definition of Done (`docs/SPEC.md §10`).
+
 ## Qué mejoraría o pediría
 - Con más tiempo: dropdowns con valores reales de SECOP para los filtros (hoy
   son texto libre), conteo total de resultados en `/api/convocatorias`
@@ -149,29 +175,8 @@ permite guardar favoritos ni reusar búsquedas; este portal sí.
   navegador (login → filtros → favorito → perfil → guardar/re-ejecutar
   búsqueda → logout) descrito en el plan de cierre Día 4 §8, ya que esta
   sesión no pudo verificarlo visualmente por falta de herramienta de navegador.
+  **Resuelto [2026-07-06]** — ver la entrada correspondiente en "Bloqueos y
+  cómo los resolví".
 
 ## Enlace al repositorio
 https://github.com/juanforo31/portal-convocatorias-secop
-
-- **[2026-07-06] Recorrido manual en navegador real (pendiente desde Día 4).**
-  Se hizo el recorrido completo con un navegador real (Playwright/Chromium
-  headless, no solo curl/build): registro → login → browse con datos reales de
-  SECOP → marcar favorito en Home y en Detail → guardar búsqueda (diálogo
-  `window.prompt`) → perfil (favoritos y búsqueda guardada visibles) →
-  re-ejecutar búsqueda guardada → logout → re-login confirmando que el
-  favorito y la búsqueda guardada **persisten** → login con credenciales
-  incorrectas mostrando "Credenciales incorrectas" (confirma que el fix del
-  interceptor 401 sigue funcionando) → `GET /api/bookmarks` sin token responde
-  401. Cero errores de consola o HTTP durante toda la sesión.
-- **[2026-07-06] `backend/requirements.txt` no era instalable desde cero.**
-  Fijaba `pydantic==2.5.0` junto a `pydantic-settings==2.5.0` (que exige
-  `pydantic>=2.7.0`) — conflicto de resolución de pip. Además, esas versiones
-  viejas de `pydantic-core` no tienen wheel prebuilt para Python 3.14, así que
-  ni siquiera compilaban desde código fuente. Esto explica las cuatro carpetas
-  de venv distintas que había en `backend/` (intentos previos hasta encontrar
-  una combinación que instalara). Se subieron `fastapi`, `uvicorn`,
-  `sqlalchemy`, `pydantic`, `python-jose`, `httpx` y `python-dotenv` a
-  versiones verificadas: instalación limpia en un venv nuevo, backend arranca,
-  y los 6 tests de pytest pasan.
-- **[2026-07-06] `README.md` creado** (no existía) para cerrar el último
-  ítem pendiente del Definition of Done (`docs/SPEC.md §10`).
