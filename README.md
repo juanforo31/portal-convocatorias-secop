@@ -9,6 +9,20 @@ las filtra, marca **favoritos** y guarda **búsquedas** para re-ejecutarlas.
 > Especificación funcional/técnica completa: [`docs/SPEC.md`](docs/SPEC.md).
 > Proceso de construcción con IA (decisiones, bloqueos, prompts): [`SOUL.md`](SOUL.md).
 
+## Documentación del proceso con IA
+
+Para evaluar cómo se construyó (no solo qué se construyó), el proceso está
+segmentado en documentos especializados:
+
+| Documento | Qué contiene |
+|---|---|
+| [`SOUL.md`](SOUL.md) | Bitácora append-only: decisiones, bloqueos y cómo se resolvieron, en orden cronológico |
+| [`docs/architecture.md`](docs/architecture.md) | Vista de arquitectura: componentes, modelo de datos, contrato de API, trade-offs |
+| [`docs/plan.md`](docs/plan.md) | Plan por días: qué se planeó vs. qué pasó realmente, con enlaces a los planes de ejecución detallados |
+| [`docs/agentes.md`](docs/agentes.md) | Qué rol de IA hizo cada parte, con qué modelo, y qué encontró |
+| [`docs/skills.md`](docs/skills.md) | Catálogo de capacidades/skills de Hermes usadas, con evidencia de dónde |
+| [`AI_FIRST_RESUMEN_JuanDavidForero_2026-07-06.md`](AI_FIRST_RESUMEN_JuanDavidForero_2026-07-06.md) | Resumen consolidado honesto: avances, aprendizajes, deuda técnica y próximos pasos |
+
 ## Stack
 
 - **Backend:** FastAPI + SQLAlchemy + SQLite · JWT (`python-jose`) · `httpx` como
@@ -84,7 +98,8 @@ pytest
 ```
 backend/   FastAPI: auth JWT, proxy a SECOP, bookmarks, saved-searches
 frontend/  React + Vite: Home, Detail, Login/Register, Profile
-docs/      SPEC.md (contrato funcional/técnico) y planes de implementación
+docs/      SPEC.md (contrato funcional/técnico), architecture.md, plan.md,
+           agentes.md, skills.md y planes de implementación
 SOUL.md    Trazabilidad del proceso de construcción con IA
 CLAUDE.md  Contrato operativo para el agente (Hermes + LLM) sobre este repo
 ```

@@ -3,6 +3,11 @@
 > Resumen contextual del trabajo con Hermes + LLMs. Es la evidencia de **cómo**
 > construí, no solo de qué construí. Se va llenando durante el reto (append-only).
 > Reto AI-First · Fase 1 · Track DEV · Juan David Forero.
+>
+> Este archivo es la bitácora cronológica. Para una vista segmentada por tema
+> ver `docs/architecture.md` (arquitectura), `docs/plan.md` (planeado vs.
+> real), `docs/agentes.md` (qué rol/modelo hizo qué) y `docs/skills.md`
+> (capacidades de Hermes usadas, con evidencia).
 
 ## Proyecto
 Portal de Convocatorias Públicas: app web con autenticación donde usuarios
