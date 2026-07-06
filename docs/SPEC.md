@@ -226,14 +226,18 @@ Todas las respuestas son JSON. Errores con shape `{"detail": "<mensaje>"}`.
 4. **Perfil** — datos del usuario, lista de favoritos, lista de búsquedas guardadas (re-ejecutables).
 
 ## 10. Criterios de aceptación (Definition of Done del MVP)
-- [ ] Puedo registrarme y luego iniciar sesión; recibo un JWT.
-- [ ] Sin token, los endpoints protegidos responden 401.
-- [ ] El browse muestra convocatorias **reales** traídas en vivo de datos.gov.co.
-- [ ] Los filtros (texto, entidad, ubicación, estado, fecha) cambian los resultados.
-- [ ] Puedo marcar un favorito y **persiste** tras recargar / re-login (está en la DB).
-- [ ] Puedo guardar una búsqueda y re-ejecutarla desde el perfil.
-- [ ] `README.md` permite levantar backend + frontend en local sin pasos ocultos.
-- [ ] `SOUL.md` documenta proceso, decisiones, prompts clave y bloqueos.
+- [x] Puedo registrarme y luego iniciar sesión; recibo un JWT.
+- [x] Sin token, los endpoints protegidos responden 401.
+- [x] El browse muestra convocatorias **reales** traídas en vivo de datos.gov.co.
+- [x] Los filtros (texto, entidad, ubicación, estado, fecha) cambian los resultados.
+- [x] Puedo marcar un favorito y **persiste** tras recargar / re-login (está en la DB).
+- [x] Puedo guardar una búsqueda y re-ejecutarla desde el perfil.
+- [x] `README.md` permite levantar backend + frontend en local sin pasos ocultos.
+- [x] `SOUL.md` documenta proceso, decisiones, prompts clave y bloqueos.
+
+> Verificado en vivo el 2026-07-06 con un recorrido completo en navegador real
+> (ver entrada correspondiente en `SOUL.md`) y con un `pip install` limpio del
+> `README.md` en un venv nuevo (`pytest`: 6/6 passed).
 
 ## 11. Riesgos y mitigaciones
 | Riesgo | Mitigación |
